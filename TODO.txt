@@ -1,6 +1,8 @@
 TODO
 
 make layout work on small screens (320x480)
+make FF compatible
+	cell padding/borders are foobar
+	highlight doesn't show (offsetHeight trick doesn't work cross-browser?)
 make IE9 compatible
-	classList polyfill
-	(forget about the css filter)
+	???

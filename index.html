@@ -7,17 +7,18 @@
   <script type="text/javascript" src="lib/func.js"></script>
   <script type="text/javascript" src="lib/debug.js"></script>
   <script type="text/javascript" src="lib/math2.js"></script>
-  
   <script type="text/javascript" src="solver.js"></script>
 <title>Sudoku solver</title>
 </head>
 <body>
   <h2 class="title">soduku colors</h2>
-  <table id="sudoku1" class="sudoku unloaded" border="1" ></table>
+  <table id="sudoku1" class="sudoku unloaded" border="1" v-on="keypress : update, keydown : beforeRemove, keyup: afterRemove"></table>
 	
 	<div>
 		<p>
 			<span class="buttons">
+				<button class="solveAction">new</button>
+				<button class="solveAction">hint</button>
 				<button class="solveAction" onclick="solve()">solve</button>
 			</span>
 			<br>
@@ -60,19 +61,88 @@ function parse(input) {
 	return result;
 }
 
+var tempValue;
+
 var vm = new Vue({
     el: 'body',
     data: {
         examples: examples
+    },
+
+    methods :  {
+    	update : function(evt) {
+    		// console.log(evt.keyCode);
+
+    		if ( evt.keyCode < 49 || evt.keyCode > 57 ) {
+    			evt.preventDefault();
+    			return;
+    		}
+
+    		function validSelection() {
+    			return window.getSelection().toString() == evt.target.value;
+    		}
+
+    		// cell already contains a value (unless the content of the input is selected)
+    		if ( evt.target.value.length && !validSelection() ) {
+    			evt.preventDefault();
+    			return;
+    		}
+
+    		var cell = evt.target.parentNode;
+    		var row = cell.parentNode;
+    		var value = String.fromCharCode(evt.keyCode);
+    		
+    		solver.updateCell(+value, row.rowIndex, cell.cellIndex);
+
+    		// focus next input
+    		var cell = evt.target.parentNode;
+    		var row = cell.parentNode;
+    		var nextIndex = 9 * row.rowIndex + cell.cellIndex;
+
+    		do {
+    		 	nextIndex = (nextIndex + 1) % 81 ;
+    			var nextCell = table.rows[Math.floor(nextIndex / 9)].cells[nextIndex%9];
+    			var input = nextCell.querySelector("input");
+    		} while (!input);
+
+    		setTimeout(function() {
+    			if (input.value) // select the contents of the textbox
+    				input.setSelectionRange(0, input.value.length);
+    			else
+    				input.focus();	
+    			
+    		},0);
+    		
+    	},
+
+    	beforeRemove : function(evt) {
+    		// console.log(evt.keyCode)
+    		if (evt.keyCode == 8 || evt.keyCode == 46)
+    			tempValue = evt.target.value;
+    	},
+    	afterRemove : function(evt) {
+    		// console.log(evt.keyCode)
+    		if (evt.keyCode == 8 || evt.keyCode == 46 && tempValue) {
+    			if (evt.target.value.length < tempValue.length) {
+    				// console.log(tempValue, "deleted");
+    				var cell = evt.target.parentNode;
+    				var row = cell.parentNode;
+    				solver.updateCell(null, row.rowIndex, cell.cellIndex);
+    			}
+
+    			tempValue = null;
+    		}
+    	}
+
     }
 });
 
 var sudoku = parse(input);
-
 var solver = new SudokuSolver(sudoku);
 var table = document.querySelector("#sudoku1");
+var button = document.querySelectorAll(".solveAction")[2];
+
 solver.renderTable(table);
-var button = document.querySelector(".solveAction");
 
 function replaceAll(input, sought, replacement) {
   if (input.indexOf(sought) > 0)
@@ -106,6 +176,6 @@ function solve() {
 		debug("failed!");
 		onFinish();
 	}
-
 }
+
 </script>

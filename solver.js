@@ -114,6 +114,22 @@ SudokuSolver.prototype = {
     }
   },
   
+  forEachCell: function(fun) {
+    for (var r = 0; r < 9; r++)
+      for (var c = 0; c < 9; c++)
+        fun.bind(this)(this.matrix[r][c],r,c);
+  },
+
+  getQuadrant: function(row, column) {
+    var quadrant = this._getQuadrantNumber(row, column);
+    var result = [];
+    this.forEachCell(function(number, r,c) {
+      if (quadrant == this._getQuadrantNumber(r,c))
+        result.push(number);
+    });
+    return result;
+  },
+
   solve: function()
   {
       return this.solveCell();
@@ -219,13 +235,19 @@ SudokuSolver.prototype = {
   
   unallocate: function(number, row, column)
   {
+    console.log(number,row,column);
     this.matrix[row][column] = null;
     this.allocated--;
-    Set.add(this.row[row], number);
-    Set.add(this.column[column], number);
+    
+    if(this.matrix[row].indexOf(number) == -1)
+      Set.add(this.row[row], number);
+
+    if(this.matrix.map(function(r){return r[column];}).indexOf(number) == -1)
+      Set.add(this.column[column], number);
     
     var quadrant = this._getQuadrantNumber(row, column);
-    Set.add(this.quadrant[quadrant], number);
+    if (this.getQuadrant(row,column).indexOf(number) == -1)
+      Set.add(this.quadrant[quadrant], number);
   },
   
   renderTable: function(htmlTable)
@@ -248,7 +270,7 @@ SudokuSolver.prototype = {
         }
         else
         {
-          cell.innerHTML = "<input class='variable' value='" + (value ? value : "") + "' />";
+          cell.innerHTML = "<input class='variable' value='" + (value ? value : "") + "' maxlength='1' />";
         }
       }
     }
@@ -361,5 +383,15 @@ SudokuSolver.prototype = {
 
   reset: function() {
     
+  },
+
+  updateCell: function(number, row, column) {
+    if (this.matrix[row][column] != null)
+      solver.unallocate(this.matrix[row][column], row, column);
+    
+    if (number != null)
+      solver.allocate(number, row, column);
+    
+    solver.colorRelatedCells(table, { number: number, row: row, column: column }, !!number );
   }
 }

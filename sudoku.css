@@ -107,6 +107,10 @@ p::before {
   border: 0;
 }
 
+.sudoku .variable:focus {
+  outline: none;
+}
+
 .buttons {
   display: inline-block;
   width: 100%;
@@ -116,7 +120,7 @@ p::before {
 .solveAction
 {
 	font-size:120%;
-  background-color: #333;
+  background-color: #222;
   color: #ccc;
   border: 0;
   border-radius: 3px;
@@ -125,18 +129,16 @@ p::before {
 
 .solveAction[disabled] {
   opacity: 0.5 !important;
-  background-color: #ccc !important;
-  color: #333 !important; 
+  background-color: #555 !important;
+  color: #888 !important; 
 }
 
 .solveAction:hover {
-  background-color: #444;
-  color: #bb0;
+  color: #cc0;
 }
 
 .solveAction:active {
-  color: #DF9A20;
-  color: yellow;
+  background-color: #333;
 }
 
 .solveAction:focus, .solveAction:active {
