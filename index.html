@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<head>
+<link href='http://fonts.googleapis.com/css?family=Rock+Salt' rel='stylesheet' type='text/css'>
+  <link href="sudoku.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="lib/vue.min.js"></script>
+  <script type="text/javascript" src="lib/set.js"></script>
+  <script type="text/javascript" src="lib/func.js"></script>
+  <script type="text/javascript" src="lib/debug.js"></script>
+  <script type="text/javascript" src="lib/math2.js"></script>
+  
+  <script type="text/javascript" src="solver.js"></script>
+<title>Sudoku solver</title>
+</head>
+<body>
+  <h2 class="title">soduku colors</h2>
+  <table id="sudoku1" class="sudoku unloaded" border="1" ></table>
+	
+	<div>
+		<p>
+			<span class="buttons">
+				<button class="solveAction" onclick="solve()">solve</button>
+			</span>
+			<br>
+			<br>
+			The color of each cell is determined by the number of free cells in that row, column and quadrant.
+			This gives each sudoku a unique color pattern.
+			Also, whenever a number is added, the color pattern changes.
+			Combined with the backtracking algorithm this results in pretty dancing colors ;-) 
+			<br>
+			<br>
+			examples:
+			try
+			<a href="?{{examples[0]}}"> this one</a>
+			or
+			<a href="?{{examples[1]}}"> this one</a>
+			or
+			<a href="?{{examples[2]}}"> this one</a>
+		</p>
+    </div>
+
+</body>
+<script>
+var examples = [
+	"__5__4___94____6__8__2___4__76_95____39_8_45____72_96__2___1__4__8____76___8__2__",
+	"748____2_6_______7__9571864__4738___8_______3___6124__4561273__2_______6_8____142",
+	"_9__________4_78___451__7___7_34516___________58261_7___4__368_7_28_9__________9_"];
+
+var input;
+if (location.search)
+	input = location.search.substring(1);
+else
+	input = examples[0];
+
+function parse(input) {
+	var mapped = input.split("").map(function(el) { return el == "_" ? null : parseInt(el); });
+	var result = [];
+	for (var r = 0; r < 9; r++) 
+		result.push( mapped.slice(r*9,r*9+9) );
+
+	return result;
+}
+
+var vm = new Vue({
+    el: 'body',
+    data: {
+        examples: examples
+    }
+});
+
+var sudoku = parse(input);
+
+var solver = new SudokuSolver(sudoku);
+var table = document.querySelector("#sudoku1");
+solver.renderTable(table);
+var button = document.querySelector(".solveAction");
+
+function replaceAll(input, sought, replacement) {
+  if (input.indexOf(sought) > 0)
+    return replaceAll(input.replace(sought, replacement), sought, replacement);
+  else
+    return input;
+}
+
+function onFinish() {
+	button.removeAttribute("disabled");
+	button.innerHTML = "reset";
+}
+
+function solve() {
+	
+	button.setAttribute("disabled", "disabled");
+
+	var before = new Date();
+	var success = solver.solve();
+	var after = new Date();
+
+
+	if (success)
+	{
+		debug(after - before + " ms");
+		solver.animate(table, onFinish);
+		//debug(solver.solution);
+	}
+	else
+	{
+		debug("failed!");
+		onFinish();
+	}
+
+}
+</script>

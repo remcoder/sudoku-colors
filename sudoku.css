@@ -1,0 +1,144 @@
+body
+{
+  font-family: 'Lucida Grande';
+	text-align: center;
+  margin: 0;
+  /*background-color: #555;*/
+  background:
+    radial-gradient(black 15%, transparent 16%) 0 0,
+    radial-gradient(black 15%, transparent 16%) 8px 8px,
+    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+  background-color:#333;
+  background-size:16px 16px;
+}
+
+.title
+{
+
+  margin: 10px 0 0 0;
+  font-family: 'Rock Salt', cursive;
+  font-size: 200%;
+  text-align: center; 
+  color: #ccc;
+  text-shadow: rgb(255, 255, 255) 0px 0px 60px;
+  font-weight: normal;
+  -webkit-transform: rotate(-2deg);
+  -webkit-animation-duration: 2s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-name: pulsingglow;
+}
+
+@-webkit-keyframes pulsingglow {
+  from {
+    color: yellow;
+    text-shadow: rgba(255, 255, 0, 1) 0px 0px 40px;
+  }
+
+  to {
+    color: #990;
+    text-shadow: rgba(255,255,0, 0) 0px 0px 40px;
+  }
+}
+
+p {
+  position: relative;
+  display: inline-block;
+  
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-align: left;
+
+  width: 430px;
+  box-sizing: border-box; 
+
+  font-size: 95%;
+}
+
+p::before {
+  content: "";
+  position: absolute;
+  /*outline: 1px solid red;*/
+  width: 100%;
+  margin-top: -10px;
+  margin-left: -20px;
+  height: 100%;
+  border-radius: 4px;
+
+  background: rgba(191,191,191,0.6);
+  z-index: -1;
+  -webkit-filter: blur(2px);
+}
+
+.sudoku
+{
+  margin: 0 auto 0 auto;
+  border: 0;
+  /*border-collapse: collapse;*/
+  font-size: 200%;
+  width: 436px;
+  height: 400px;
+}
+
+.sudoku td
+{
+  width: 42px;
+  height: 42px;
+  text-align: center;
+  border-radius: 3px;
+}
+  
+.sudoku td.smooth
+{
+  -webkit-transition: background-color 0.3s linear, color 0.3s linear;
+}
+.sudoku .fixed
+{
+  font-weight: bold;
+}
+
+.sudoku .fixed, .sudoku .variable
+{
+  width: 22px;
+  background-color: inherit;
+  font-size: inherit;
+  border: 0;
+}
+
+.buttons {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.solveAction
+{
+	font-size:120%;
+  background-color: #333;
+  color: #ccc;
+  border: 0;
+  border-radius: 3px;
+  padding: 5px 15px;
+}
+
+.solveAction[disabled] {
+  opacity: 0.5 !important;
+  background-color: #ccc !important;
+  color: #333 !important; 
+}
+
+.solveAction:hover {
+  background-color: #444;
+  color: #bb0;
+}
+
+.solveAction:active {
+  color: #DF9A20;
+  color: yellow;
+}
+
+.solveAction:focus, .solveAction:active {
+  outline: 0;
+} 

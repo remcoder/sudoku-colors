@@ -1,0 +1,6 @@
+TODO
+
+make layout work on small screens (320x480)
+make IE9 compatible
+	classList polyfill
+	(forget about the css filter)
