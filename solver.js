@@ -355,6 +355,6 @@ SudokuSolver.prototype = {
     if (number != null)
       solver.allocate(number, row, column);
     
-    solver.colorRelatedCells(table, { number: number, row: row, column: column }, !!number );
+    solver.colorRelatedCells({ number: number, row: row, column: column }, !!number );
   }
 }
