@@ -65,7 +65,7 @@ p {
 
   background-color: #999;
   color: #333;
-  border: 0;
+  border: 1px solid black;
   border-radius: 3px;
   box-shadow: rgba(0,0,0,0.5) 4px 4px 4px;
 }
@@ -94,13 +94,15 @@ p {
 .sudoku
 {
   margin: 0 auto 0 auto;
-  border: 0;
+  
   font-size: 200%;
   width: 436px;
   height: 452px;
+  border-spacing: 2px;
 }
 
 .sudoku td {
+  border: 1px solid black;
   position: relative;
   width: 42px;
   height: 42px;
@@ -171,7 +173,7 @@ p {
   background-color: #999;
   color: #333;
   border: 0;
-  border-radius: 3px;
+  border-radius: 6px;
   padding: 5px 15px;
   box-shadow: rgba(0,0,0,0.5) 4px 4px 4px;
 }
