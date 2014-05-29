@@ -17,20 +17,18 @@
   		v-on="keypress : update, keydown : beforeRemove, keyup: afterRemove">
   	</table>
 	
+	<div class="buttons">
+			<button class="solveAction" v-on="click : newSudoku">new</button>
+			<button class="solveAction" 
+				v-on="click: solve" 
+				
+				v-attr="disabled : state != 'initial' && 'disabled'">solve</button>
+			<button class="solveAction"
+			v-on="click : reset"
+			>reset</button>
+	</div>
 	<div>
 		<p>
-			<span class="buttons">
-				<button class="solveAction" v-on="click : newSudoku">new</button>
-				<button class="solveAction" 
-					v-on="click: solve" 
-					
-					v-attr="disabled : state != 'initial' && 'disabled'">solve</button>
-				<button class="solveAction"
-				v-on="click : reset"
-				>reset</button>
-			</span>
-			<br>
-			<br>
 			The color of each cell is determined by the number of free cells in that row, column and quadrant.
 			This gives each sudoku a unique color pattern.
 			Also, whenever a number is added, the color pattern changes.

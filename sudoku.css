@@ -22,9 +22,9 @@ body {
 .title
 {
 
-  margin: 10px 0 0 0;
+  margin: 0px 0 10px 0;
   font-family: 'Rock Salt', cursive;
-  font-size: 200%;
+  font-size: 240%;
   text-align: center; 
   color: #ccc;
   text-shadow: rgb(255, 255, 255) 0px 0px 60px;
@@ -62,22 +62,34 @@ p {
   box-sizing: border-box; 
 
   font-size: 95%;
+
+  background-color: #999;
+  color: #333;
+  border: 0;
+  border-radius: 3px;
+  box-shadow: rgba(0,0,0,0.5) 4px 4px 4px;
 }
 
-p::before {
+/*p::before {
   content: "";
   position: absolute;
-  /*outline: 1px solid red;*/
   width: 100%;
   margin-top: -10px;
   margin-left: -20px;
   height: 100%;
   border-radius: 4px;
 
-  background: rgba(191,191,191,0.6);
+  background:
+    radial-gradient(black 15%, transparent 16%) 0 0,
+    radial-gradient(black 15%, transparent 16%) 8px 8px,
+    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+  background-color:#333;
+  background-size:16px 16px;
+
   z-index: -1;
-  -webkit-filter: blur(2px);
-}
+  -webkit-filter: blur(4px);
+}*/
 
 .sudoku
 {
@@ -94,6 +106,7 @@ p::before {
   height: 42px;
   text-align: center;
   border-radius: 3px;
+  box-shadow: rgba(0,0,0,0.5) 4px 4px 4px;
 }
 
 /* middle quandrants */
@@ -147,25 +160,27 @@ p::before {
 }
 
 .buttons {
-  display: inline-block;
-  width: 100%;
+  margin-top: 30px;
+  margin-bottom:10px;
   text-align: center;
 }
 
 .solveAction
 {
 	font-size:120%;
-  background-color: #222;
-  color: #ccc;
+  background-color: #999;
+  color: #333;
   border: 0;
   border-radius: 3px;
   padding: 5px 15px;
+  box-shadow: rgba(0,0,0,0.5) 4px 4px 4px;
 }
 
 .solveAction[disabled] {
-  opacity: 0.5 !important;
-  background-color: #555 !important;
-  color: #888 !important; 
+  /*opacity: 0.5 !important;*/
+  /*background-color: #555 !important;*/
+  background-color: rgba(143,143,143,0.5)
+  /*color: #333 !important; */
 }
 
 .solveAction:hover {
