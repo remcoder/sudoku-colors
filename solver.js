@@ -6,8 +6,7 @@ function SudokuSolver(table)
 {
   this.table = table;
   this.delay = 150; // timeout between steps in animation 
-  this.renderTable();
-  // this.reset();
+  this._rendered = false;
 }
 
 
@@ -37,6 +36,11 @@ SudokuSolver.prototype = {
       }
     }
     this._updateAllOptions();
+
+    if (!this._rendered++)
+      this.renderTable();
+    
+    this.table.offsetHeight;
 
     this.renderNumbers();
   },
@@ -218,11 +222,12 @@ SudokuSolver.prototype = {
     
     for ( var r=0 ; r<9 ; r++ ) {
       var row = this.table.insertRow(this.table.rows.length);
-      for ( var c=0 ; c<9 ; c++ )
+      for ( var c=0 ; c<9 ; c++ ) {
         var cell = row.insertCell(row.cells.length);
+        cell.style.backgroundColor = "transparent";
+      }
+
     }
-    
-    this.colorFixed();
   },
 
   renderNumbers: function() {

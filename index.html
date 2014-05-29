@@ -27,15 +27,15 @@
 			This gives each sudoku a unique color pattern.
 			Also, whenever a number is added, the color pattern changes.
 			Combined with the backtracking algorithm this results in pretty dancing colors ;-) 
-			<br>
+			<!-- <br>
 			<br>
 			examples:
 			try
-			<a href="?{{examples[0]}}"> this one</a>
+			<a href="#{{examples[0]}}"> this one</a>
 			or
-			<a href="?{{examples[1]}}"> this one</a>
+			<a href="#{{examples[1]}}"> this one</a>
 			or
-			<a href="?{{examples[2]}}"> this one</a>
+			<a href="#{{examples[2]}}"> this one</a> -->
 		</p>
     </div>
 
@@ -46,12 +46,9 @@ var examples = [
 	"748____2_6_______7__9571864__4738___8_______3___6124__4561273__2_______6_8____142",
 	"_9__________4_78___451__7___7_34516___________58261_7___4__368_7_28_9__________9_"];
 
-var input;
-if (location.search)
-	input = location.search.substring(1);
-else
-	input = examples[0];
-
+var table = document.querySelector("#sudoku1");
+var solver = new SudokuSolver(table);
+var button = document.querySelectorAll(".solveAction")[2];
 var tempValue;
 
 var vm = new Vue({
@@ -66,7 +63,7 @@ var vm = new Vue({
     			var i = Math.floor( Math.random() * examples.length );
     			var sudoku = examples[i];
     		} while (solver.sudokuString == sudoku)
-    		solver.init(sudoku);
+    		location.hash = "#" + sudoku;
     	},
 
     	update : function(evt) {
@@ -137,12 +134,6 @@ var vm = new Vue({
     }
 });
 
-var table = document.querySelector("#sudoku1");
-var solver = new SudokuSolver(table);
-var button = document.querySelectorAll(".solveAction")[2];
-
-solver.init(input);
-
 function onFinish() {
 	button.removeAttribute("disabled");
 	button.innerHTML = "reset";
@@ -168,6 +159,13 @@ function solve() {
 		debug("failed!");
 		onFinish();
 	}
+}
+
+window.onload = window.onhashchange = function() {
+	if (!location.hash)
+		location.hash = "#" + examples[0];
+	else
+		solver.init(location.hash.substring(1));
 }
 
 </script>
