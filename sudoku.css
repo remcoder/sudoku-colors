@@ -109,7 +109,7 @@ p::before {
 .sudoku .fixed, .sudoku .variable
 {
   width: 22px;
-  background-color: inherit;
+  background-color: transparent;
   font-size: inherit;
   border: 0;
 }
