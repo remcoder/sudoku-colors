@@ -218,15 +218,12 @@ SudokuSolver.prototype = {
   },
   
   renderTable: function() {
-    console.log('renderTable');
-    
     for ( var r=0 ; r<9 ; r++ ) {
       var row = this.table.insertRow(this.table.rows.length);
       for ( var c=0 ; c<9 ; c++ ) {
         var cell = row.insertCell(row.cells.length);
         cell.style.backgroundColor = "transparent";
       }
-
     }
   },
 
@@ -335,6 +332,7 @@ SudokuSolver.prototype = {
   },
 
   reset: function() {
+    this.stopAnimation();
     this.sudokuString = '';
     this.solution = [];
     this.matrix = null;
