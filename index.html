@@ -138,11 +138,11 @@ var vm = new Vue({
 });
 
 var sudoku = parse(input);
-var solver = new SudokuSolver(sudoku);
 var table = document.querySelector("#sudoku1");
+var solver = new SudokuSolver(sudoku, table);
 var button = document.querySelectorAll(".solveAction")[2];
 
-solver.renderTable(table);
+solver.renderTable();
 
 function replaceAll(input, sought, replacement) {
   if (input.indexOf(sought) > 0)
@@ -168,7 +168,7 @@ function solve() {
 	if (success)
 	{
 		debug(after - before + " ms");
-		solver.animate(table, onFinish);
+		solver.animate(onFinish);
 		//debug(solver.solution);
 	}
 	else

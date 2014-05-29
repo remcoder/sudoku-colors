@@ -1,5 +1,6 @@
 TODO
 
+make buttons work as expected
 make layout work on small screens (320x480)
 make FF compatible
 	cell padding/borders are foobar
