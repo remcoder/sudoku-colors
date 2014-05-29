@@ -2,44 +2,45 @@
 
 var cycles = 0;
 
-function SudokuSolver(matrix, table)
+function SudokuSolver(table)
 {
   this.table = table;
-  this.solution = [];
   this.delay = 150; // timeout between steps in animation 
-  this.matrix = matrix;
-  this.allocated = 0;
-  
-  // a set of coordinates to keep track of the slots that were pre-allocaed from the start. we use this data
-  // to check which slots may never be changed
-  this.fixed = {} // empty set
-  
-  // store reference for use inside nested functions
-  var sudoku = this;
-  
-  // these 3 arrays of sets keep track of the available numbers per row/column/quadrant
-  this.row = fill([], function() { return sudoku._numbers();}, 9);
-  this.column = fill([], function() { return sudoku._numbers();}, 9);
-  this.quadrant = fill([], function() { return sudoku._numbers();}, 9);
-    
-  // init
-  var value;
-  for ( var r in matrix )
-  {
-    for ( var c in matrix[r] )
-    {
-      value = matrix[r][c];
-      if (value)
-      {
-        Set.add(this.fixed, [r, c]);
-        this.allocate(value, r, c);
-      }
-    }
-  }
-  this._updateAllOptions();
+  this.renderTable();
+  // this.reset();
 }
 
+
+
 SudokuSolver.prototype = {
+  parse: function(input) {
+    var mapped = input.split("").map(function(el) { return el == "_" ? null : parseInt(el); });
+    var result = [];
+    for (var r = 0; r < 9; r++) 
+      result.push( mapped.slice(r*9,r*9+9) );
+
+    return result;
+  },
+
+  init: function(sudokuString) {
+    solver.reset();
+    this.sudokuString = sudokuString;
+    this.matrix = this.parse(sudokuString);
+    
+    for ( var r=0 ; r<9 ; r++ ) {
+      for ( var c=0 ; c<9 ; c++ ) {
+        var value = this.matrix[r][c];
+        if (value) {
+          Set.add(this.fixed, [r, c]);
+          this.allocate(value, r, c);
+        }
+      }
+    }
+    this._updateAllOptions();
+
+    this.renderNumbers();
+  },
+
   _numbers: function() {
     return Set.make(1,2,3,4,5,6,7,8,9);
   },
@@ -214,32 +215,32 @@ SudokuSolver.prototype = {
   
   renderTable: function() {
     console.log('renderTable');
-    var row;
-    var cell, c, value;
-    for ( var r in this.matrix )
-    {
-      row = this.table.insertRow(this.table.rows.length);
-      for ( c in this.matrix[r] )
-      {
-        cell = row.insertCell(row.cells.length);
-        cell.className = "smooth";
-        value = this.matrix[r][c];
-        
+    
+    for ( var r=0 ; r<9 ; r++ ) {
+      var row = this.table.insertRow(this.table.rows.length);
+      for ( var c=0 ; c<9 ; c++ )
+        var cell = row.insertCell(row.cells.length);
+    }
+    
+    this.colorFixed();
+  },
+
+  renderNumbers: function() {
+    for ( var r=0 ; r<9 ; r++ ) {
+      for ( var c=0 ; c<9 ; c++ ) {
+        var value = this.matrix[r][c];
+        var cell = this.table.rows[r].cells[c];
         if (this.isFixed(r,c))
-        {
           cell.innerHTML = "<span class='fixed'>"+value+"</span>"; 
-        }
         else
-        {
           cell.innerHTML = "<input class='variable' value='" + (value ? value : "") + "' maxlength='1' />";
-        }
       }
     }
     
     this.colorFixed();
   },
 
-// not just a solution matrix but rather a sequence of allocations leading up to the solution
+  // not just a solution matrix but rather a sequence of allocations leading up to the solution
   animate:function(complete) {
     var sudoku = this;
     // reset options
@@ -329,7 +330,19 @@ SudokuSolver.prototype = {
   },
 
   reset: function() {
+    this.sudokuString = '';
+    this.solution = [];
+    this.matrix = null;
+    this.allocated = 0;
     
+    // a set of coordinates to keep track of the slots that were pre-allocaed from the start. we use this data
+    // to check which slots may never be changed
+    this.fixed = {} // empty set
+    
+    // these 3 arrays of sets keep track of the available numbers per row/column/quadrant
+    this.row = fill([], this._numbers, 9);
+    this.column = fill([], this._numbers, 9);
+    this.quadrant = fill([], this._numbers, 9);
   },
 
   updateCell: function(number, row, column) {

@@ -17,7 +17,7 @@
 	<div>
 		<p>
 			<span class="buttons">
-				<button class="solveAction">new</button>
+				<button class="solveAction" v-on="click : newSudoku">new</button>
 				<button class="solveAction">hint</button>
 				<button class="solveAction" onclick="solve()">solve</button>
 			</span>
@@ -52,15 +52,6 @@ if (location.search)
 else
 	input = examples[0];
 
-function parse(input) {
-	var mapped = input.split("").map(function(el) { return el == "_" ? null : parseInt(el); });
-	var result = [];
-	for (var r = 0; r < 9; r++) 
-		result.push( mapped.slice(r*9,r*9+9) );
-
-	return result;
-}
-
 var tempValue;
 
 var vm = new Vue({
@@ -70,6 +61,14 @@ var vm = new Vue({
     },
 
     methods :  {
+    	newSudoku : function() {
+    		do {
+    			var i = Math.floor( Math.random() * examples.length );
+    			var sudoku = examples[i];
+    		} while (solver.sudokuString == sudoku)
+    		solver.init(sudoku);
+    	},
+
     	update : function(evt) {
     		// console.log(evt.keyCode);
 
@@ -120,6 +119,7 @@ var vm = new Vue({
     		if (evt.keyCode == 8 || evt.keyCode == 46)
     			tempValue = evt.target.value;
     	},
+
     	afterRemove : function(evt) {
     		// console.log(evt.keyCode)
     		if (evt.keyCode == 8 || evt.keyCode == 46 && tempValue) {
@@ -137,19 +137,11 @@ var vm = new Vue({
     }
 });
 
-var sudoku = parse(input);
 var table = document.querySelector("#sudoku1");
-var solver = new SudokuSolver(sudoku, table);
+var solver = new SudokuSolver(table);
 var button = document.querySelectorAll(".solveAction")[2];
 
-solver.renderTable();
-
-function replaceAll(input, sought, replacement) {
-  if (input.indexOf(sought) > 0)
-    return replaceAll(input.replace(sought, replacement), sought, replacement);
-  else
-    return input;
-}
+solver.init(input);
 
 function onFinish() {
 	button.removeAttribute("disabled");
