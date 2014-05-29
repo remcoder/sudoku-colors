@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <head>
-<link href='http://fonts.googleapis.com/css?family=Rock+Salt' rel='stylesheet' type='text/css'>
-  <link href="sudoku.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="lib/vue.min.js"></script>
-  <script type="text/javascript" src="lib/set.js"></script>
-  <script type="text/javascript" src="lib/func.js"></script>
-  <script type="text/javascript" src="lib/debug.js"></script>
-  <script type="text/javascript" src="lib/math2.js"></script>
-  <script type="text/javascript" src="solver.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Rock+Salt' rel='stylesheet' type='text/css'>
+	<link href="sudoku.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="lib/vue.min.js"></script>
+	<script type="text/javascript" src="lib/set.js"></script>
+	<script type="text/javascript" src="lib/func.js"></script>
+	<script type="text/javascript" src="lib/debug.js"></script>
+	<script type="text/javascript" src="lib/math2.js"></script>
+	<script type="text/javascript" src="solver.js"></script>
 <title>Sudoku solver</title>
 </head>
 <body>
-  <h2 class="title">soduku colors</h2>
-  <table id="sudoku1" class="sudoku unloaded" border="1" v-on="keypress : update, keydown : beforeRemove, keyup: afterRemove"></table>
+  	<h2 class="title">soduku colors</h2>
+  	<table id="sudoku1"
+  		class="sudoku" border="1" 
+  		v-on="keypress : update, keydown : beforeRemove, keyup: afterRemove">
+  	</table>
 	
 	<div>
 		<p>
 			<span class="buttons">
 				<button class="solveAction" v-on="click : newSudoku">new</button>
-				<button class="solveAction">hint</button>
-				<button class="solveAction" onclick="solve()">solve</button>
+				<button class="solveAction" 
+					v-on="click: solve" 
+					
+					v-attr="disabled : state != 'initial' && 'disabled'">solve</button>
+				<button class="solveAction"
+				v-on="click : reset"
+				>reset</button>
 			</span>
 			<br>
 			<br>
@@ -54,10 +62,17 @@ var tempValue;
 var vm = new Vue({
     el: 'body',
     data: {
+
+    	state : "initial", 
         examples: examples
     },
 
     methods :  {
+    	init: function(s) {
+    		this.$data.state = 'initial';
+    		solver.init(s);
+    	},
+
     	newSudoku : function() {
     		do {
     			var i = Math.floor( Math.random() * examples.length );
@@ -129,43 +144,36 @@ var vm = new Vue({
 
     			tempValue = null;
     		}
-    	}
+    	},
 
+    	solve: function() {
+			solver.init(); // restart this sudoku to initial state
+			this.$data.state = 'solving';
+			var before = new Date();
+			solver.solve();
+			var after = new Date();
+
+			this.$data.state = 'animating';
+			debug(after - before + " ms");
+			solver.animate(function() {
+				this.$data.state = 'solved';
+			}.bind(this));
+		},
+
+		reset: function() {
+			this.$data.state = 'initial';
+			solver.init();
+		}
     }
 });
 
-function onFinish() {
-	button.removeAttribute("disabled");
-	button.innerHTML = "reset";
-}
 
-function solve() {
-	
-	button.setAttribute("disabled", "disabled");
-
-	var before = new Date();
-	var success = solver.solve();
-	var after = new Date();
-
-
-	if (success)
-	{
-		debug(after - before + " ms");
-		solver.animate(onFinish);
-		//debug(solver.solution);
-	}
-	else
-	{
-		debug("failed!");
-		onFinish();
-	}
-}
 
 window.onload = window.onhashchange = function() {
 	if (!location.hash)
 		location.hash = "#" + examples[0];
 	else
-		solver.init(location.hash.substring(1));
+		vm.init(location.hash.substring(1));
 }
 
 </script>

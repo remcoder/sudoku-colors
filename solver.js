@@ -22,9 +22,10 @@ SudokuSolver.prototype = {
   },
 
   init: function(sudokuString) {
+    var prevSudoku = this.sudokuString;
     solver.reset();
-    this.sudokuString = sudokuString;
-    this.matrix = this.parse(sudokuString);
+    this.sudokuString = sudokuString || prevSudoku;
+    this.matrix = this.parse(this.sudokuString);
     
     for ( var r=0 ; r<9 ; r++ ) {
       for ( var c=0 ; c<9 ; c++ ) {
