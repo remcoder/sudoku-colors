@@ -35,6 +35,7 @@ body {
   -webkit-animation-direction: alternate;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-name: pulsingglow;
+  height: 77px;
 }
 
 @-webkit-keyframes pulsingglow {
@@ -85,7 +86,7 @@ p::before {
   /*border-collapse: collapse;*/
   font-size: 200%;
   width: 436px;
-  height: 400px;
+  height: 452px;
 }
 
 .sudoku td
