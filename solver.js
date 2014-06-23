@@ -247,9 +247,9 @@ SudokuSolver.prototype = {
   animate:function(complete) {
     var sudoku = this;
     // reset options
-    this.row = fill([], function() { return sudoku._numbers();}, 9);
-    this.column = fill([], function() { return sudoku._numbers();}, 9);
-    this.quadrant = fill([], function() { return sudoku._numbers();}, 9);
+    this.row = this._initAvailableNumbers();
+    this.column = this._initAvailableNumbers();
+    this.quadrant = this._initAvailableNumbers();
     this.colorFixed();
 
     // add fixed numbers
@@ -328,8 +328,8 @@ SudokuSolver.prototype = {
   },
   
   mergeColors: function(options) {
-    var colors = map( function(count) { return 255 - 255 * count/10 ; } , options);
-    return "#" + map( Math2.dec2hex, colors ).join("");
+    var colors = options.map( function(count) { return 255 - 255 * count/10 ; });
+    return "#" + colors.map( Math2.dec2hex).join("");
   },
 
   reset: function() {
@@ -344,9 +344,16 @@ SudokuSolver.prototype = {
     this.fixed = {} // empty set
     
     // these 3 arrays of sets keep track of the available numbers per row/column/quadrant
-    this.row = fill([], this._numbers, 9);
-    this.column = fill([], this._numbers, 9);
-    this.quadrant = fill([], this._numbers, 9);
+    this.row = this._initAvailableNumbers();
+    this.column = this._initAvailableNumbers();
+    this.quadrant = this._initAvailableNumbers();
+  },
+
+  _initAvailableNumbers : function() {
+    // init array and populate with undefined see: http://www.2ality.com/2013/11/initializing-arrays.html
+    var arr = Array.apply(null, Array(9));
+    // now we can use a regular map
+    return arr.map(function() { return Set.make(1,2,3,4,5,6,7,8,9); });
   },
 
   updateCell: function(number, row, column) {
