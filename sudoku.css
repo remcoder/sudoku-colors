@@ -26,16 +26,20 @@ body {
   font-family: 'Rock Salt', cursive;
   font-size: 240%;
   text-align: center; 
-  color: #ccc;
-  text-shadow: rgb(255, 255, 255) 0px 0px 60px;
+  color: #999;
+  
   font-weight: normal;
+  height: 77px;
   -webkit-transform: rotate(-2deg);
+}
+
+.title.glowing {
+  text-shadow: rgb(255, 255, 255) 0px 0px 60px;
   -webkit-animation-duration: 2s;
   -webkit-animation-timing-function: linear;
   -webkit-animation-direction: alternate;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-name: pulsingglow;
-  height: 77px;
 }
 
 @-webkit-keyframes pulsingglow {
@@ -63,7 +67,7 @@ p {
 
   font-size: 95%;
 
-  background-color: #999;
+  background-color: #ddd;
   color: #333;
   border: 1px solid black;
   border-radius: 3px;
