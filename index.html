@@ -5,7 +5,6 @@
 	<link href="sudoku.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="lib/vue.min.js"></script>
 	<script type="text/javascript" src="lib/set.js"></script>
-	<script type="text/javascript" src="lib/debug.js"></script>
 	<script type="text/javascript" src="lib/math2.js"></script>
 	<script type="text/javascript" src="solver.js"></script>
     <script type="text/javascript" src="sudokus.js"></script>
@@ -169,7 +168,7 @@ var vm = new Vue({
 			var after = new Date();
 
 			this.$data.state = 'animating';
-			debug(after - before + " ms");
+			console.log(after - before + " ms");
 			solver.animate(function() {
 				this.$data.state = 'solved';
 			}.bind(this));
