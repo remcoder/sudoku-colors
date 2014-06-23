@@ -223,8 +223,8 @@ SudokuSolver.prototype = {
   },
   
   renderTable: function() {
-    for ( var r=0 ; r<9 ; r++ ) {
-      for ( var c=0 ; c<9 ; c++ ) {
+     for ( var c=0 ; c<9 ; c++ ){
+      for ( var r=0 ; r<9 ; r++ ) {
         var cell = document.createElement('div');
         cell.id = 'cell'+r+c;
         cell.className = 'cell';
