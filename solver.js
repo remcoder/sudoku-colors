@@ -318,7 +318,7 @@ SudokuSolver.prototype = {
 
     if (highlight) {
       cell.className = ""; // removes 'smooth' and disbles the transition temporarily
-      cell.style.backgroundColor = "yellow";
+      cell.style.backgroundColor = "#fff";
       cell.offsetHeight;
     }
 
