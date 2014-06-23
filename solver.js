@@ -99,6 +99,10 @@ SudokuSolver.prototype = {
       }
     }
   },
+
+  _cell : function(row,column) {
+    return document.getElementById('cell'+row+column); 
+  },
   
   forEachCell: function(fun) {
     for (var r = 0; r < 9; r++)
@@ -220,10 +224,16 @@ SudokuSolver.prototype = {
   
   renderTable: function() {
     for ( var r=0 ; r<9 ; r++ ) {
-      var row = this.table.insertRow(this.table.rows.length);
       for ( var c=0 ; c<9 ; c++ ) {
-        var cell = row.insertCell(row.cells.length);
+        var cell = document.createElement('div');
+        cell.id = 'cell'+r+c;
+        cell.className = 'cell';
         cell.style.backgroundColor = "transparent";
+        var x = r*46 + Math.round((r-1)/3)*5; // the second part is to separate the 9 quadrants
+        var y = c*46 + Math.round((c-1)/3)*5;
+        cell.style.webkitTransform = 'translate3d('+x+'px,'+y+'px,0)';
+        cell.style.transform = 'translate3d('+x+'px,'+y+'px,0)';
+        this.table.appendChild(cell);
       }
     }
   },
@@ -232,7 +242,7 @@ SudokuSolver.prototype = {
     for ( var r=0 ; r<9 ; r++ ) {
       for ( var c=0 ; c<9 ; c++ ) {
         var value = this.matrix[r][c];
-        var cell = this.table.rows[r].cells[c];
+        var cell = this._cell(r,c);
         if (this.isFixed(r,c))
           cell.innerHTML = "<span class='fixed'>"+value+"</span>"; 
         else
@@ -295,7 +305,7 @@ SudokuSolver.prototype = {
   doStep: function(step) {
     // fill in the number
     var number = this.matrix[step.row][step.column];
-    var cell = this.table.rows[step.row].cells[step.column];
+    var cell = this._cell(step.row, step.column);
     cell.getElementsByTagName("input")[0].value = number;
     
     // update options & colors
@@ -312,17 +322,17 @@ SudokuSolver.prototype = {
   },
   
   colorCell: function(row, column, quadrant, highlight) {
-    var cell = this.table.rows[row].cells[column];
+    var cell = this._cell(row,column);
     var color = this.mergeColors([ Set.count(this.row[row]), 
       Set.count(this.column[column]), Set.count(this.quadrant[quadrant]) ]);
 
     if (highlight) {
-      cell.className = ""; // removes 'smooth' and disbles the transition temporarily
+      cell.classList.remove('smooth')// removes 'smooth' and disbles the transition temporarily
       cell.style.backgroundColor = "#fff";
       cell.offsetHeight;
     }
 
-    cell.className = "smooth";
+    cell.classList.add("smooth");
     cell.style.backgroundColor = color;
     //cell.title= Set.toString(this.row[row]) + ", " + Set.toString(this.column[column]) + ", " + Set.toString(this.quadrant[quadrant]) + " " + color;
   },

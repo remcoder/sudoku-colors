@@ -12,10 +12,10 @@
 </head>
 <body>
   	<h2 class="title">sudoku colors</h2>
-  	<table id="sudoku1"
+  	<div id="sudoku1"
   		class="sudoku" 
   		v-on="keypress : update, keydown : beforeRemove, keyup: afterRemove">
-  	</table>
+  	</div>
 	
 	<div class="buttons">
 			<button class="solveAction" v-on="click : newSudoku">new</button>
