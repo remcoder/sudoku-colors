@@ -34,12 +34,24 @@ body {
 }
 
 .title.glowing {
-  text-shadow: rgb(255, 255, 255) 0px 0px 60px;
+  text-shadow: rgba(255, 255, 0, 1) 0px 0px 20px;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-name: pulsingglow;
+
   -webkit-animation-duration: 2s;
   -webkit-animation-timing-function: linear;
   -webkit-animation-direction: alternate;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-name: pulsingglow;
+
+  -moz-animation-duration: 2s;
+  -moz-animation-timing-function: linear;
+  -moz-animation-direction: alternate;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-name: pulsingglow;
 }
 
 @-webkit-keyframes pulsingglow {
@@ -51,6 +63,18 @@ body {
   to {
     color: #990;
     text-shadow: rgba(255,255,0, 0) 0px 0px 40px;
+  }
+}
+
+@-moz-keyframes pulsingglow {
+  from {
+    color: yellow;
+    xtext-shadow: rgba(255, 255, 0, 1) 0px 0px 40px;
+  }
+
+  to {
+    color: #990;
+    xtext-shadow: rgba(255,255,0, 0) 0px 0px 40px;
   }
 }
 
@@ -95,8 +119,7 @@ p {
   -webkit-filter: blur(4px);
 }*/
 
-.sudoku
-{
+.sudoku {
   margin: 0 auto 0 auto;
   
   font-size: 200%;
@@ -145,7 +168,9 @@ p {
 
 .sudoku td.smooth
 {
+  transition: background-color 0.3s linear, color 0.3s linear;
   -webkit-transition: background-color 0.3s linear, color 0.3s linear;
+  -moz-transition: background-color 0.3s linear, color 0.3s linear;
 }
 
 .sudoku .fixed
