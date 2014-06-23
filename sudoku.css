@@ -29,6 +29,8 @@ body {
   font-weight: normal;
   height: 77px;
   -webkit-transform: rotate(-2deg);
+  -moz-transform: rotate(-2deg);
+  transform: rotate(-2deg);
 }
 
 .title.glowing {
