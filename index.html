@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 	<link href='http://fonts.googleapis.com/css?family=Rock+Salt' rel='stylesheet' type='text/css'>
 	<link href="sudoku.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="lib/vue.min.js"></script>
@@ -114,20 +114,20 @@ var vm = new Vue({
     		}
 
     		var cell = evt.target.parentNode;
-    		var row = cell.parentNode;
     		var value = String.fromCharCode(evt.keyCode);
-    		
-    		solver.updateCell(+value, row.rowIndex, cell.cellIndex);
+    		var row = +cell.id[4];
+            var column = +cell.id[5];
+    		solver.updateCell(+value, row, column);
 
     		// focus next input
     		var cell = evt.target.parentNode;
-    		var row = cell.parentNode;
-    		var nextIndex = 9 * row.rowIndex + cell.cellIndex;
-
+    		
     		do {
-    		 	nextIndex = (nextIndex + 1) % 81 ;
-    			var nextCell = table.rows[Math.floor(nextIndex / 9)].cells[nextIndex%9];
-    			var input = nextCell.querySelector("input");
+    			cell = cell.nextElementSibling
+                if (!cell)
+                    cell = evt.target.parentNode.parentNode.firstElementChild;
+
+    			var input = cell.querySelector("input");
     		} while (!input);
 
     		setTimeout(function() {
