@@ -223,14 +223,14 @@ SudokuSolver.prototype = {
   },
   
   renderTable: function() {
-     for ( var c=0 ; c<9 ; c++ ){
-      for ( var r=0 ; r<9 ; r++ ) {
+     for ( var r=0 ; r<9 ; r++ ){
+      for ( var c=0 ; c<9 ; c++ ) {
         var cell = document.createElement('div');
         cell.id = 'cell'+r+c;
         cell.className = 'cell';
-        cell.style.backgroundColor = "transparent";
-        var x = r*46 + Math.round((r-1)/3)*5; // the second part is to separate the 9 quadrants
-        var y = c*46 + Math.round((c-1)/3)*5;
+        cell.style.backgroundColor = 'transparent';
+        var x = c*46 + Math.round((c-1)/3)*5; // the second part is to separate the 9 quadrants
+        var y = r*46 + Math.round((r-1)/3)*5;
         cell.style.webkitTransform = 'translate3d('+x+'px,'+y+'px,0)';
         cell.style.transform = 'translate3d('+x+'px,'+y+'px,0)';
         this.table.appendChild(cell);
