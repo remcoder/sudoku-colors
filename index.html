@@ -14,7 +14,10 @@
   	<h2 class="title">Sudoku Colors</h2>
   	<div id="sudoku1"
   		class="sudoku" 
-  		v-on="keypress : update, keydown : beforeRemove, keyup: afterRemove">
+  		v-on="keypress : update,
+            keydown : beforeRemove,
+            keydown : moveWithKeys,
+            keyup: afterRemove">
   	</div>
 	
 	<div class="buttons">
@@ -73,6 +76,12 @@ var table = document.querySelector("#sudoku1");
 var solver = new SudokuSolver(table);
 var button = document.querySelectorAll(".solveAction")[2];
 var tempValue;
+var arrowKeys = {
+    37  : { r: 0,c:-1},
+    38  : { r:-1,c: 0},
+    39  : { r: 0,c: 1},
+    40  : { r: 1,c: 0}
+};
 
 var vm = new Vue({
     el: 'body',
@@ -130,15 +139,20 @@ var vm = new Vue({
     			var input = cell.querySelector("input");
     		} while (!input);
 
-    		setTimeout(function() {
-    			if (input.value) // select the contents of the textbox
-    				input.setSelectionRange(0, input.value.length);
-    			else
-    				input.focus();	
-    			
-    		},0);
+    		this.focusCell(cell);
     		
     	},
+
+        focusCell: function(cell) {
+            var input = cell.querySelector("input");
+
+            setTimeout(function() {
+                if (input.value) // select the contents of the textbox
+                    input.setSelectionRange(0, input.value.length);
+                else
+                    input.focus();  
+            },0);
+        },
 
     	beforeRemove : function(evt) {
     		// console.log(evt.keyCode)
@@ -159,6 +173,27 @@ var vm = new Vue({
     			tempValue = null;
     		}
     	},
+
+        moveWithKeys : function(evt) {
+            console.log(evt.keyCode);
+            if (!(evt.keyCode in arrowKeys)) return;
+
+            var cell = evt.target.parentNode;
+            var row = +cell.id[4];
+            var column = +cell.id[5];
+            var dir = arrowKeys[evt.keyCode];
+            console.log(dir);
+            
+            do {
+                row += dir.r;
+                column += dir.c;
+                row = (row + 9) % 9;
+                column = (column + 9) % 9;
+                var targetCell = solver._cell(row,column);
+            } while (!targetCell.querySelector('input'))
+            
+            this.focusCell(targetCell);
+        },
 
     	solve: function() {
 			solver.init(); // restart this sudoku to initial state
