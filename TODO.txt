@@ -1,5 +1,8 @@
 TODO
 
+- google analytics
+- twitter / facebook buttons
+
 - play with the brightening bias
 
 - the sudoku not precisely centered
